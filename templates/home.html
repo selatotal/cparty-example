@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>Campus Party Example</title>
+</head>
+<body>
+    <form method="post" action="/">
+        Title: <input type="text" name="title" /><br/>
+        Author: <input type="text" name="author" /><br/>
+        <input type="submit" value="Add" />
+    </form>
+
+    <h1>Books</h1>
+    {% for book in books %}
+      <p>{{book.title}} - {{ book.author }}</p>
+    {% endfor %}
+</body>
+</html>
