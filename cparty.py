@@ -52,6 +52,9 @@ def deleteBook(book_id):
     db.session.commit()
     return redirect('/')
 
+@app.route('/health')
+def healthCheck():
+    return "OK"
 
 if __name__ == '__main__':
     db.create_all()
