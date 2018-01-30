@@ -6,15 +6,10 @@
     <title>Campus Party Example - v1</title>
 </head>
 <body>
-    <form method="post" action="/">
-        Title: <input type="text" name="title" /><br/>
-        Author: <input type="text" name="author" /><br/>
-        <input type="submit" value="Add" />
-    </form>
-
     <h1>Books</h1>
+    <p><a href="/book">Add Book</a></p>
     {% for book in books %}
-      <p>{{book.title}} - {{ book.author }}</p>
+      <p>{{book.title}} - {{ book.author }} - <a href="/book/{{book.id}}">Edit</a> - <a href="/book/{{book.id}}/delete">Delete</a></p>
     {% endfor %}
 </body>
 </html>
