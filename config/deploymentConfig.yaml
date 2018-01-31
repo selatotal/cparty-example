@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  name: cparty-example
+  namespace: cparty-example
+  selfLink: /oapi/v1/namespaces/cparty-example/deploymentconfigs/cparty-example
+  uid: 1619096c-01fb-11e8-bc8c-12719bf92a20
+  resourceVersion: '16450724'
+  generation: 15
+  creationTimestamp: '2018-01-25T18:10:55Z'
+  labels:
+    app: cparty-example
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+spec:
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+    resources:
+  triggers:
+    -
+      type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - cparty-example
+        from:
+          kind: ImageStreamTag
+          namespace: cparty-example
+          name: 'cparty-example:latest'
+        lastTriggeredImage: '172.30.149.42:5000/cparty-example/cparty-example@sha256:47a47ff66bf147e051b1e832ad039576004a914b9e5ffffe6092305f14dede9f'
+    -
+      type: ConfigChange
+    -
+      type: GitHub
+  replicas: 1
+  test: false
+  selector:
+    deploymentconfig: cparty-example
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: cparty-example
+        deploymentconfig: cparty-example
+    spec:
+      containers:
+        -
+          name: cparty-example
+          image: '172.30.149.42:5000/cparty-example/cparty-example@sha256:47a47ff66bf147e051b1e832ad039576004a914b9e5ffffe6092305f14dede9f'
+          ports:
+            -
+              containerPort: 8080
+              protocol: TCP
+          env:
+            -
+              name: APP_FILE
+              value: cparty.py
+            -
+              name: CPARTY_SETTINGS
+              value: config/cparty.config
+          resources:
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext:
+status:
+  latestVersion: 13
+  observedGeneration: 15
+  replicas: 1
+  updatedReplicas: 1
+  availableReplicas: 1
+  details:
+    message: 'caused by an image change'
+    causes:
+      -
+        type: ImageChange
+        imageTrigger:
+          from:
+            kind: ImageStreamTag
+            namespace: cparty-example
+            name: 'cparty-example:latest'
